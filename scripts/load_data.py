@@ -37,9 +37,9 @@ def preprocess_data(version_dir):
     # Preprocess
 
     # Drop columns with all NaN values
-    df = df.dropna(axis=1, how='all', inplace=True)
+    df.dropna(axis=1, how='all', inplace=True)
     # Fill Na values with placeholder
-    df = df.fillna(-1, inplace=True)
+    df.fillna(-1, inplace=True)
 
     # Convert Unknown values to a placeholder
     df.replace('Unknown', -1, inplace=True)
