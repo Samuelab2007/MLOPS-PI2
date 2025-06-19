@@ -35,13 +35,27 @@ def preprocess_data(version_dir):
     df = pd.read_csv(os.path.join(version_dir, "bots_vs_users.csv"))
     
     # Preprocess
-    df = df.dropna(subset=df.columns[:1])
+
+    # Drop columns with all NaN values
+    df = df.dropna(axis=1, how='all', inplace=True)
+    # Fill Na values with placeholder
+    df = df.fillna(-1, inplace=True)
+
+    # Convert Unknown values to a placeholder
+    df.replace('Unknown', -1, inplace=True)
+
+    # Convert non-numeric columns to numeric where possible
+    for col in df.columns:
+        if df[col].dtype == 'object':
+            df[col] = pd.to_numeric(df[col], errors='coerce')
+
+    """
     df = df.select_dtypes(include=["number", "object"]).copy()
     df = df.fillna(method='ffill').fillna(method='bfill')
 
     for col in df.select_dtypes(include=['object']):
         df[col] = LabelEncoder().fit_transform(df[col])
-
+    """
     # Save dataset
     df.to_csv(os.path.join(version_dir, "dataset_preprocessed.csv"))
 
