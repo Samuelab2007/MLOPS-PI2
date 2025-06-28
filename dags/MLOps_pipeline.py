@@ -24,6 +24,11 @@ with DAG(
         bash_command='python3 /home/usuario/scripts/load_data.py',
     )
 
+    cross_validate = BashOperator(
+        task_id='cross_validate',
+        bash_command='python3 /home/usuario/scripts/cross_validation.py --data data/latest/dataset_preprocessed.csv --report results/cross_validation_report.csv'
+    )
+
     train_model = BashOperator(
         task_id='train_model',
         bash_command='python3 /home/usuario/scripts/train_model.py',
